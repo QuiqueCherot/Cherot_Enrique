@@ -1,0 +1,26 @@
+/*ACÁ COMIENZA HEADER*/
+.header{
+    background-image: url("/img/header__img.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    &__conteiner{
+        display: flex;
+        justify-content: end;
+    }
+    &__nav{
+        color: white;
+        
+    }
+    &__title{
+        margin: 5rem;
+        text-align: center;
+        color: white;
+        font-family: 'Permanent Marker', cursive;
+    }
+    &__wave{
+        position: absolute;
+    }
+   
+}
+/*ACÁ TERMINA HEADER*/
