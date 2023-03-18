@@ -15,15 +15,17 @@
     <header class="header">
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid header__conteiner">
-              <a class="navbar-brand header__nav" href="#">Navbar</a>
+                <a class="navbar-brand header__nav" href="#">
+                <img class="header__logo" src="./img/logo.png" alt="Sombrero de Cheff">
+                </a>
               <button class="navbar-toggler header__nav" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
-              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav ">
-                 <a class="nav-link header__nav" aria-current="page" href="#">Home</a>
-                 <a class="nav-link header__nav" href="#">Features</a>
-                <a class="nav-link header__nav" href="#">Pricing</a>
+              <div class="collapse navbar-collapse header__items" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                 <a class="nav-link header__nav" aria-current="page" href="#">About Us</a>
+                 <a class="nav-link header__nav" href="#">Contáctanos</a>
+                <a class="nav-link header__nav" href="#">Blog</a>
                 </div>
               </div>
             </div>
@@ -34,83 +36,35 @@
         <div style="height: 150px; overflow: hidden;" ><svg viewBox="0 0 500 150" preserveAspectRatio="none" style="height: 100%; width: 100%;"><path d="M-0.00,49.85 C150.00,149.60 349.20,-49.85 500.00,49.85 L500.00,149.60 L-0.00,149.60 Z" style="stroke: white; fill: rgb(255, 255, 255);" class="header__wave"></path></svg></div>
     </header>
     <main>
-        <!--
-        Pondría: 4 box, cards:
-        Según ingredientes
-        Random Pick (No te gustó la opción va de nuevo)
-        Con carne
-        Vegetariano
-        -->
         <section class="hero hero__conteiner">
             <h2 class="hero__title">Elegí tu opción</h2>
             <div class="hero__boxcontainer">
                 <article class="hero__box">
-                    <img class="hero__img" src="/img/box__img1.jpg" alt="Ingredientes">
+                    <img class="hero__img" src="./img/box__img1.jpg" alt="Ingredientes">
                     <div class="hero__boxhover">
                         <h3 class="hero__boxtitle">Ingresá tus Ingredientes</h3>
                     </div>
                 </article>
                 <article class="hero__box">
-                    <img class="hero__img" src="/img/box__img2.jpg" alt="Ingredientes Random">
+                    <img class="hero__img" src="./img/box__img2.jpg" alt="Ingredientes Random">
                     <div class="hero__boxhover">
                         <h3 class="hero__boxtitle">Random Pick</h3>
                     </div>
                 </article>
                 <article class="hero__box">
-                    <img class="hero__img" src="/img/box__img3.jpg" alt="Comidas Veggies">
+                    <img class="hero__img" src="./img/box__img3.jpg" alt="Comidas Veggies">
                     <div class="hero__boxhover">
                         <h3 class="hero__boxtitle">Comida Veggie</h3>
                     </div>
                 </article>
                 <article class="hero__box">
-                    <img class="hero__img" src="/img/box__img4.jpg" alt="Meat Meals">
+                    <img class="hero__img" src="./img/box__img4.jpg" alt="Meat Meals">
                     <div class="hero__boxhover">
                         <h3 class="hero__boxtitle">Para Carnívoros</h3>
                     </div>
                 </article>
             </div>
         </section>
-        <!--
-            <article class="about__item">
-                <img src="./img/about_img1.jpg" alt="Empresas que confían en nosotros" class="about__img">
-                <div class="about__hover">
-              
-                    <h2 class="about__title">
-                      Who trusted in us
-                    </h2>
-                </div>            
-            </article>
-
-            &:hover .about__hover{
-            transform: translateX(0%);  
-            color:#093438;
-        }
-    }
-    &__title{
-        text-align: center;
-    }
-    &__img{
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        cursor: pointer;
-    }
-    &__hover{
-        position: absolute;
-        background: #01838fa3;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        transform: translateX(100%);
-        transition: transform 1s;
-        cursor: pointer;
-    }
-        -->
     </main>
     <footer class="footer">
         <div class="footer__box">
