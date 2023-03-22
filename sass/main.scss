@@ -1,3 +1,11 @@
-@import "./partials/reset.scss";
-@import "./partials/header.scss";
-@import "./partials/hero.scss"
+@import "./partials/base/_reset.scss";
+@import "./partials/layouts/navbar";
+@import "./partials/layouts/footer";
+@import "./partials/views/home";
+@import "./partials/views/ingredients";
+/*  utilities
+    reset
+    layouts
+    views
+    responsive
+*/

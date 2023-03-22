@@ -11,7 +11,7 @@
   background-size: cover;
   background-repeat: no-repeat;
   width: 100%;
-  height: 80vh;
+  height: 95vh;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -37,6 +37,17 @@
     font-family: 'Permanent Marker', cursive; }
 
 /*ACÁ TERMINA HEADER*/
+.footer {
+  display: flex;
+  justify-content: center; }
+  .footer__registrada {
+    font-weight: bold;
+    width: 100%;
+    height: 3rem;
+    text-align: center;
+    box-shadow: 5px 0 20px black;
+    padding-top: 0.75rem; }
+
 .hero {
   display: flex;
   flex-direction: column;
@@ -82,3 +93,51 @@
     transform: translateX(100%);
     transition: transform 1s;
     cursor: pointer; }
+
+.header__ingredients {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-image: url("/img/header_ingredients.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-y: center;
+  width: 100%;
+  height: 95vh;
+  position: relative; }
+
+.header__conteiner {
+  display: flex;
+  justify-content: end; }
+
+.header__items {
+  justify-content: end;
+  align-items: center;
+  margin-right: 2rem; }
+
+.header__nav {
+  color: white;
+  text-shadow: 5px 0 20px black;
+  font-size: larger; }
+
+.header__logo {
+  height: 5rem; }
+
+.header__title {
+  font-size: 4em;
+  text-shadow: 5px 0 20px black;
+  text-align: center;
+  color: white;
+  font-family: 'Permanent Marker', cursive; }
+
+.header__wave {
+  bottom: 0;
+  position: absolute; }
+
+/*ACÁ TERMINA HEADER*/
+/*  utilities
+    reset
+    layouts
+    views
+    responsive
+*/
