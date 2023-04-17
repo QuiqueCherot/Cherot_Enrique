@@ -97,7 +97,7 @@ let recetas = [
   receta9,
 ];
 
-/* Función para pre entrega - no tiene funcionalidad en la aplicación web,*/
+/* Función para pre entrega - no tiene funcionalidad en la aplicación web, es sólo ingreso de nombre*/
 function pedirNombre() {
   let nombreIngresado = prompt("Hola, ¿Cómo te llamas?");
   alert("Así que eres " + nombreIngresado);
@@ -106,8 +106,6 @@ pedirNombre();
 /*Función Random para generar una receta aleatorea - crea un número aleatoreo que se compara con los id de las recetas*/
 function recetaRandom() {
   let numeroRandom = Math.round(Math.random() * (recetas.length - 1) + 1);
-  //console de control número random.
-  console.log(numeroRandom);
   for (let i = 0; i < recetas.length; i++) {
     if (recetas[i].id == numeroRandom) {
       alert("La receta elegida es: " + recetas[i].nombre);
@@ -117,10 +115,10 @@ function recetaRandom() {
 let ingredientes = new Array();
 let contador = 1;
 let eleccionInicial = prompt(
-  "Ingresa tu opción: Ingredientes / Random");
+  "Ingresa tu opción: Usar mis ingredientes / Random");
 if (eleccionInicial.toLowerCase() == "random") {
   recetaRandom();
-} else {
+} else if (eleccionInicial.toLowerCase() == "usar mis ingredientes"){
     let cantidad = parseInt(prompt("¿Cuántos ingredientes vas a ingresar?"));
     
     while (contador <= cantidad) {
@@ -147,7 +145,9 @@ if (eleccionInicial.toLowerCase() == "random") {
     
     alert("ingredientes ingresados: " + ingredientesIngresados);
     console.log(ingredientes);
-}
+} else (
+  alert("El mensaje ingresado es erróneo, por favor ingresa 'Usar mis ingredientes' o 'Random'")
+)
 
 /*CREAMOS COMPARADOR DE ARRAYS*/
 
@@ -156,18 +156,17 @@ let recetasElegidas = [];
 for (let i = 0; i < ingredientes.length; i++) {
   for (let j = 0; j < recetas.length; j++) {
     find = recetas[j].ingredientes.includes(ingredientes[i]);
-    console.log(ingredientes[i] + find + recetas[j].ingredientes);
-    if (find) {
+    let recetasElegidasRepetidas = recetasElegidas.find(
+      (unaReceta) => unaReceta === recetas[j].nombre);
+    if (find && !recetasElegidasRepetidas) {
       recetasElegidas.push(recetas[j].nombre);
-    }
+      }
   }
   //creamos recetasParaMostrar sólo a fines de mostrar el Alert para la preEntrega2
-  let recetasParaMostrar = recetasElegidas.join(", ");
-  if (!recetasElegidas.length) {
-    alert("No tenemos una receta para tus ingredientes.");
-  } else {
-    alert("Con tus ingredientes, podes cocinar: " + recetasParaMostrar);
-  }
 }
-
-//Nos falta un control para evitar que se repitan ingredientes y que se separen las recetas en distintos alerts.
+let recetasParaMostrar = recetasElegidas.join(", ");
+if (!recetasElegidas.length && eleccionInicial == "usar mis ingredientes") {
+  alert("No tenemos una receta para tus ingredientes.");
+} else if (recetasElegidas.length && eleccionInicial.toLowerCase =="usar mis ingredientes"){
+  alert("Con tus ingredientes, podes cocinar: " + recetasParaMostrar);
+}
