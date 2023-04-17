@@ -165,8 +165,8 @@ for (let i = 0; i < ingredientes.length; i++) {
   //creamos recetasParaMostrar sólo a fines de mostrar el Alert para la preEntrega2
 }
 let recetasParaMostrar = recetasElegidas.join(", ");
-if (!recetasElegidas.length && eleccionInicial == "usar mis ingredientes") {
+if (!recetasElegidas.length && eleccionInicial.toLocaleLowerCase == "usar mis ingredientes") {
   alert("No tenemos una receta para tus ingredientes.");
-} else if (recetasElegidas.length && eleccionInicial.toLowerCase =="usar mis ingredientes"){
+} else if (recetasElegidas.length){
   alert("Con tus ingredientes, podes cocinar: " + recetasParaMostrar);
 }
