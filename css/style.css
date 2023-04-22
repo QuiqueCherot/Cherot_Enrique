@@ -135,6 +135,65 @@
   position: absolute; }
 
 /*ACÁ TERMINA HEADER*/
+.ingredients {
+  margin: 5rem; }
+  .ingredients__hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2em; }
+  .ingredients__label {
+    font-size: 2rem;
+    font-family: 'Permanent Marker', cursive; }
+  .ingredients__input {
+    width: 40%; }
+  .ingredients__ingresados {
+    margin: 2.5em; }
+  .ingredients__table {
+    width: 40%;
+    align-items: center; }
+
+/*AQUI COMIENZA RANDOM PICK*/
+.header__random {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-image: url("/img/header_random.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-y: center;
+  width: 100%;
+  height: 95vh;
+  position: relative; }
+
+/*AQUÍ TERMINA RANDOM PICK*/
+.random__div {
+  border: solid 1px black;
+  box-shadow: 0px 0px 28px 1px rgba(0, 0, 0, 0.95);
+  border-radius: 20px;
+  border: 1px solid black;
+  border-radius: 20px;
+  height: 30rem;
+  width: 20rem;
+  margin: 10rem auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("/img/randombox_img.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  cursor: pointer; }
+
+.random__div:hover {
+  transition: transform 1.5s ease-in-out;
+  transform: scale(1.1); }
+
+.random__title {
+  font-family: 'Permanent Marker', cursive;
+  color: white;
+  font-size: 2.5em; }
+
 /*  utilities
     reset
     layouts
