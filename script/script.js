@@ -97,76 +97,113 @@ let recetas = [
   receta9,
 ];
 
-/* Función para pre entrega - no tiene funcionalidad en la aplicación web, es sólo ingreso de nombre*/
-function pedirNombre() {
-  let nombreIngresado = prompt("Hola, ¿Cómo te llamas?");
-  alert("Así que eres " + nombreIngresado);
-}
-pedirNombre();
 /*Función Random para generar una receta aleatorea - crea un número aleatoreo que se compara con los id de las recetas*/
 function recetaRandom() {
   let numeroRandom = Math.round(Math.random() * (recetas.length - 1) + 1);
   for (let i = 0; i < recetas.length; i++) {
     if (recetas[i].id == numeroRandom) {
       alert("La receta elegida es: " + recetas[i].nombre);
+      console.log(recetas[i.nombre + numeroRandom]);
     }
   }
 }
+const goRandomBtn = document.getElementById("goRandomBtn");
+goRandomBtn.addEventListener("click", recetaRandom);
+
+/* Para poner la lista en el HTML
+ let lista = document.getElementById("listaParticipantes"); no haría falta dado que tengo la data.
+  lista.innerHTML = "";
+  participantes.forEach((p) => {
+    let item = document.createElement("p");
+    item.innerText = p.apellido + ", " + p.nombre;
+    lista.append(item);
+    */
 let ingredientes = new Array();
 let contador = 1;
 let eleccionInicial = prompt(
-  "Ingresa tu opción: Usar mis ingredientes / Random");
+  "Ingresa tu opción: Usar mis ingredientes / Random"
+);
 if (eleccionInicial.toLowerCase() == "random") {
   recetaRandom();
-} else if (eleccionInicial.toLowerCase() == "usar mis ingredientes"){
-    let cantidad = parseInt(prompt("¿Cuántos ingredientes vas a ingresar?"));
-    
-    while (contador <= cantidad) {
-      let ingrediente = prompt("Ingrese el ingrediente número ".concat(contador));
-    
-      if (ingredientes.includes(ingrediente.toLowerCase())) {
-        alert("Ese ingrediente ya fue ingresado");
-      } else if (
-        ingrediente == "" ||
-        ingrediente == null ||
-        ingrediente == undefined ||
-        ingrediente == " "
-      ) {
-        alert(
-          "El ingrediente ingresado no es correcto. Por favor ingresa nuevamente el ingrediente"
-        );
-      } else {
-        ingredientes.push(ingrediente.toLowerCase());
-        contador++;
-      }
+} else if (eleccionInicial.toLowerCase() == "usar mis ingredientes") {
+  let cantidad = parseInt(prompt("¿Cuántos ingredientes vas a ingresar?"));
+
+  while (contador <= cantidad) {
+    let ingrediente = prompt("Ingrese el ingrediente número ".concat(contador));
+
+    if (ingredientes.includes(ingrediente.toLowerCase())) {
+      alert("Ese ingrediente ya fue ingresado");
+    } else if (
+      ingrediente == "" ||
+      ingrediente == null ||
+      ingrediente == undefined ||
+      ingrediente == " "
+    ) {
+      alert(
+        "El ingrediente ingresado no es correcto. Por favor ingresa nuevamente el ingrediente"
+      );
+    } else {
+      ingredientes.push(ingrediente.toLowerCase());
+      contador++;
     }
-    //ingredietnesIngresados sirve únicamente para cumplir con la preEntrega. No tiene funcionalidad aparte.
-    let ingredientesIngresados = ingredientes.join(", ");
-    
-    alert("ingredientes ingresados: " + ingredientesIngresados);
-    console.log(ingredientes);
-} else (
-  alert("El mensaje ingresado es erróneo, por favor ingresa 'Usar mis ingredientes' o 'Random'")
-)
+  }
+  //ingredietnesIngresados sirve únicamente para cumplir con la preEntrega. No tiene funcionalidad aparte.
+  let ingredientesIngresados = ingredientes.join(", ");
+
+  alert("ingredientes ingresados: " + ingredientesIngresados);
+  console.log(ingredientes);
+} else
+  alert(
+    "El mensaje ingresado es erróneo, por favor ingresa 'Usar mis ingredientes' o 'Random'"
+  );
 
 /*CREAMOS COMPARADOR DE ARRAYS*/
-
 let find = false;
 let recetasElegidas = [];
 for (let i = 0; i < ingredientes.length; i++) {
   for (let j = 0; j < recetas.length; j++) {
     find = recetas[j].ingredientes.includes(ingredientes[i]);
     let recetasElegidasRepetidas = recetasElegidas.find(
-      (unaReceta) => unaReceta === recetas[j].nombre);
+      (unaReceta) => unaReceta === recetas[j].nombre
+    );
     if (find && !recetasElegidasRepetidas) {
       recetasElegidas.push(recetas[j].nombre);
-      }
+    }
   }
   //creamos recetasParaMostrar sólo a fines de mostrar el Alert para la preEntrega2
 }
 let recetasParaMostrar = recetasElegidas.join(", ");
-if (!recetasElegidas.length && eleccionInicial.toLocaleLowerCase == "usar mis ingredientes") {
+if (
+  !recetasElegidas.length &&
+  eleccionInicial.toLocaleLowerCase == "usar mis ingredientes"
+) {
   alert("No tenemos una receta para tus ingredientes.");
-} else if (recetasElegidas.length){
+} else if (recetasElegidas.length) {
   alert("Con tus ingredientes, podes cocinar: " + recetasParaMostrar);
 }
+
+/*Sintaxis se puede:
+opción 1:
+const btnInscribir = document.getElementById("id");
+btnInscribir.AddEventListener("click", saludar());
+AddEventListener // la mejor opción
+opción 2:
+onclick = () => lo que haga.... Function arrow.
+
+opción 3:
+directo como si fuera una class en HTML -- onclieck="saludar();" esta no es recomendado
+
+El otro evento más usado es el Evento Change
+
+Ejemplo 6:
+const input = document.getElementById("nombres");
+input.addEventListener("change", ()=> {console.log, input.value);//esto en inputs.
+};)
+
+con value tomamos lo que ingresa el usuario.
+*/
+
+
+
+//CREAMOS RANDOM VIEW, RELACIONAMOS LA LÓGICA DEL RANDOM AL EVENTO ON CLICK Y LE DIMOS ESTILOS AL BTN.
+
