@@ -1,17 +1,5 @@
 /*OBJETOS DE RECETAS
 
-/* Analizando la posibilidad de que el usuario ingrese su receta favorita y suplimos la func Recetas
-por la de abajo
- function Receta (id, nombre, dificultad, tiempoDePreparacion) {
-    this.id = id;
-    this.nombre = nombre;
-    this.ingredientes = [];
-    this.dificultad = dificultad;
-    this.tiempoDePreparacion =  tiempoDePreparacion;   
-
-    this.agregarIngredientes = (ingrediente)=> this.ingredientes.push(ingrediente);
-}; */
-
 /*Este objeto reemplaza temporalmente el consumo de una API de recetas*/
 function Receta(id, nombre, ingredientes, dificultad, tiempoDePreparacion) {
   this.id = id;
@@ -110,14 +98,7 @@ function recetaRandom() {
 const goRandomBtn = document.getElementById("goRandomBtn");
 goRandomBtn.addEventListener("click", recetaRandom);
 
-/* Para poner la lista en el HTML
- let lista = document.getElementById("listaParticipantes"); no haría falta dado que tengo la data.
-  lista.innerHTML = "";
-  participantes.forEach((p) => {
-    let item = document.createElement("p");
-    item.innerText = p.apellido + ", " + p.nombre;
-    lista.append(item);
-    */
+
 let ingredientes = new Array();
 let contador = 1;
 let eleccionInicial = prompt(
@@ -182,28 +163,5 @@ if (
   alert("Con tus ingredientes, podes cocinar: " + recetasParaMostrar);
 }
 
-/*Sintaxis se puede:
-opción 1:
-const btnInscribir = document.getElementById("id");
-btnInscribir.AddEventListener("click", saludar());
-AddEventListener // la mejor opción
-opción 2:
-onclick = () => lo que haga.... Function arrow.
 
-opción 3:
-directo como si fuera una class en HTML -- onclieck="saludar();" esta no es recomendado
-
-El otro evento más usado es el Evento Change
-
-Ejemplo 6:
-const input = document.getElementById("nombres");
-input.addEventListener("change", ()=> {console.log, input.value);//esto en inputs.
-};)
-
-con value tomamos lo que ingresa el usuario.
-*/
-
-
-
-//CREAMOS RANDOM VIEW, RELACIONAMOS LA LÓGICA DEL RANDOM AL EVENTO ON CLICK Y LE DIMOS ESTILOS AL BTN.
 
