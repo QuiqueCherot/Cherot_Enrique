@@ -1,27 +1,76 @@
-/*Given a year, return the century it is in. The first century spans from the year 1 up to and including the year 100, the second - from the year 101 up to and including the year 200, etc.
+/*function pintarTabla(collection = []) {
+    // Pintar la tabla de carreras en la UI
+    let bodyTable = document.getElementById("tableBody");
+    bodyTable.innerHTML = "";
+    collection.forEach((element) => {
+      let record = document.createElement("tr");
+      record.innerHTML = `<tr>
+        <td scope="row">${element.id}</td>
+        <td>${element.toString()}</td>
+        <td>${element.catedras.length.toString()}</td>
+      </tr>`;
+      bodyTable.append(record);
+    });
+  }*/
 
-Example
+function validarIngrediente(ingredienteIngresado) {
+  if (
+    ingredienteIngresado == "" ||
+    ingredienteIngresado == null ||
+    ingredienteIngresado == undefined ||
+    ingredienteIngresado == " "
+  ) {
+    return true;
+  }
+}
+function Ingrediente(nombre) {
+  this.nombre = nombre;
+}
 
-For year = 1905, the output should be
-solution(year) = 20;
-For year = 1700, the output should be
-solution(year) = 17.
-Input/Output
+function buscarIngrediente(ingredienteIngresado) {
+  return ingredientes.find(
+    (element) => element === ingredienteIngresado
+  );
+}
+let ingredientes = new Array();
+const formulario = document.getElementById("formulario");
+function mostrarReceta() {
+  const ingredienteIngresado =
+    document.getElementById("nombreIngrediente").value;
+  // Buscamos y validamos, o creamos una Receta
+  console.log(ingredienteIngresado);
+  let unIngrediente = buscarIngrediente(ingredienteIngresado);
+  let ingredienteValidado = validarIngrediente(ingredienteIngresado);
+  if (!unIngrediente && !ingredienteValidado) {
+    unaReceta = new Ingrediente(ingredienteIngresado);
+    // Añadir el ingrediente ingresado por el usuario a la lista de ingredientes
+    ingredientes.push(unaReceta);
+    
+  } else {
+    
+    console.log(
+      "EL INGREDIENTE CON EL NOMBRE (" +
+        nombreIngediente() +
+        ") YA FUE INGRESADO."
+    );
+    return false;
+  }
 
-[execution time limit] 4 seconds (js)
+  return true;
+}
 
-[input] integer year
+// Función para limpiar el input
+function clearInput() {
+  document.getElementById("nombre").value = "";
+}
 
-A positive integer, designating the year.
-
-Guaranteed constraints:
-1 ≤ year ≤ 2005.
-
-[output] integer
-
-The number of the century the year is in.
-
-[JavaScript] Syntax Tips
-*/
-
+formulario.addEventListener("submit", (event) => {
+  event.preventDefault();
+  let resultado = mostrarReceta();
+  console.log(ingredientes);
+  if(resultado){
+    console.log("Se hizo todo perfecto y ojalá sea este el mensaje, sino a llorar")
+  }
+  return resultado;
+});
 
