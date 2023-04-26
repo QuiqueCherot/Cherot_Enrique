@@ -1,28 +1,7 @@
-/*function pintarTabla(collection = []) {
-    // Pintar la tabla de carreras en la UI
-    let bodyTable = document.getElementById("tableBody");
-    bodyTable.innerHTML = "";
-    collection.forEach((element) => {
-      let record = document.createElement("tr");
-      record.innerHTML = `<tr>
-        <td scope="row">${element.id}</td>
-        <td>${element.toString()}</td>
-        <td>${element.catedras.length.toString()}</td>
-      </tr>`;
-      bodyTable.append(record);
-    });
-  }*/
-
 function validarIngrediente(ingredienteIngresado) {
-  if (
-    ingredienteIngresado == "" ||
-    ingredienteIngresado == null ||
-    ingredienteIngresado == undefined ||
-    ingredienteIngresado == " "
-  ) {
-    return true;
-  }
+  return ( ingrediente || false); 
 }
+
 function Ingrediente(nombre) {
   this.nombre = nombre;
 }
@@ -32,8 +11,10 @@ function buscarIngrediente(ingredienteIngresado) {
     (element) => element === ingredienteIngresado
   );
 }
+
 let ingredientes = new Array();
 const formulario = document.getElementById("formulario");
+
 function mostrarReceta() {
   const ingredienteIngresado =
     document.getElementById("nombreIngrediente").value;
