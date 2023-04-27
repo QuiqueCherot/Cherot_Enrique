@@ -85,60 +85,8 @@ let recetas = [
   receta9,
 ];
 
-/*Función Random para generar una receta aleatorea - crea un número aleatoreo que se compara con los id de las recetas*/
-function recetaRandom() {
-  let numeroRandom = Math.round(Math.random() * (recetas.length - 1) + 1);
-  for (let i = 0; i < recetas.length; i++) {
-    if (recetas[i].id == numeroRandom) {
-      alert("La receta elegida es: " + recetas[i].nombre);
-      console.log(recetas[i.nombre + numeroRandom]);
-    }
-  }
-}
-const goRandomBtn = document.getElementById("goRandomBtn");
-goRandomBtn.addEventListener("click", recetaRandom);
 
-
-let ingredientes = new Array();
-let contador = 1;
-let eleccionInicial = prompt(
-  "Ingresa tu opción: Usar mis ingredientes / Random"
-);
-if (eleccionInicial.toLowerCase() == "random") {
-  recetaRandom();
-} else if (eleccionInicial.toLowerCase() == "usar mis ingredientes") {
-  let cantidad = parseInt(prompt("¿Cuántos ingredientes vas a ingresar?"));
-
-  while (contador <= cantidad) {
-    let ingrediente = prompt("Ingrese el ingrediente número ".concat(contador));
-
-    if (ingredientes.includes(ingrediente.toLowerCase())) {
-      alert("Ese ingrediente ya fue ingresado");
-    } else if (
-      ingrediente == "" ||
-      ingrediente == null ||
-      ingrediente == undefined ||
-      ingrediente == " "
-    ) {
-      alert(
-        "El ingrediente ingresado no es correcto. Por favor ingresa nuevamente el ingrediente"
-      );
-    } else {
-      ingredientes.push(ingrediente.toLowerCase());
-      contador++;
-    }
-  }
-  //ingredietnesIngresados sirve únicamente para cumplir con la preEntrega. No tiene funcionalidad aparte.
-  let ingredientesIngresados = ingredientes.join(", ");
-
-  alert("ingredientes ingresados: " + ingredientesIngresados);
-  console.log(ingredientes);
-} else
-  alert(
-    "El mensaje ingresado es erróneo, por favor ingresa 'Usar mis ingredientes' o 'Random'"
-  );
-
-/*CREAMOS COMPARADOR DE ARRAYS*/
+/*CREAMOS COMPARADOR DE ARRAYS
 let find = false;
 let recetasElegidas = [];
 for (let i = 0; i < ingredientes.length; i++) {
@@ -162,6 +110,6 @@ if (
 } else if (recetasElegidas.length) {
   alert("Con tus ingredientes, podes cocinar: " + recetasParaMostrar);
 }
-
+*/
 
 
