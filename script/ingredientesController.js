@@ -1,9 +1,19 @@
-function validarIngrediente(ingredienteIngresado) {
-  return ( ingrediente || false); 
+function pintarTabla(collection = []) {
+  // Pintar la tabla de carreras en la UI
+  let ingredientTable = document.getElementById("ingredientTable");
+  ingredientTable.innerHTML = "";
+  collection.forEach((element) => {
+    let record = document.createElement("tr");
+    //<td scope="row">${element.id}</td>
+    record.innerHTML = `<tr>      
+      <td scope="row">"1"</td>
+      <td>${element.toString()}</td>
+    </tr>`;
+    ingredientTable.append(record);
+  });
 }
-
-function Ingrediente(nombre) {
-  this.nombre = nombre;
+function validarIngrediente(ingredienteIngresado) {
+  return ( ingredienteIngresado || false); 
 }
 
 function buscarIngrediente(ingredienteIngresado) {
@@ -19,19 +29,18 @@ function mostrarReceta() {
   const ingredienteIngresado =
     document.getElementById("nombreIngrediente").value;
   // Buscamos y validamos, o creamos una Receta
-  console.log(ingredienteIngresado);
   let unIngrediente = buscarIngrediente(ingredienteIngresado);
   let ingredienteValidado = validarIngrediente(ingredienteIngresado);
-  if (!unIngrediente && !ingredienteValidado) {
-    unaReceta = new Ingrediente(ingredienteIngresado);
+  if (!unIngrediente && ingredienteValidado) {
     // Añadir el ingrediente ingresado por el usuario a la lista de ingredientes
-    ingredientes.push(unaReceta);
+    ingredientes.push(ingredienteIngresado);
+    // msj exitoso
     
   } else {
-    
+    // msj error
     console.log(
       "EL INGREDIENTE CON EL NOMBRE (" +
-        nombreIngediente() +
+        ingredienteIngresado +
         ") YA FUE INGRESADO."
     );
     return false;
@@ -42,15 +51,16 @@ function mostrarReceta() {
 
 // Función para limpiar el input
 function clearInput() {
-  document.getElementById("nombre").value = "";
+  document.getElementById("nombreIngrediente").value = "";
 }
 
 formulario.addEventListener("submit", (event) => {
   event.preventDefault();
   let resultado = mostrarReceta();
-  console.log(ingredientes);
   if(resultado){
-    console.log("Se hizo todo perfecto y ojalá sea este el mensaje, sino a llorar")
+    pintarTabla(ingredientes);
+    clearInput();
+
   }
   return resultado;
 });
