@@ -87,18 +87,7 @@ let recetas = [
 
 
 /*CREAMOS COMPARADOR DE ARRAYS
-let find = false;
-let recetasElegidas = [];
-for (let i = 0; i < ingredientes.length; i++) {
-  for (let j = 0; j < recetas.length; j++) {
-    find = recetas[j].ingredientes.includes(ingredientes[i]);
-    let recetasElegidasRepetidas = recetasElegidas.find(
-      (unaReceta) => unaReceta === recetas[j].nombre
-    );
-    if (find && !recetasElegidasRepetidas) {
-      recetasElegidas.push(recetas[j].nombre);
-    }
-  }
+
   //creamos recetasParaMostrar sólo a fines de mostrar el Alert para la preEntrega2
 }
 let recetasParaMostrar = recetasElegidas.join(", ");
