@@ -1,6 +1,7 @@
 const tablaIngredientes = document.getElementById("ingredientTable");
 const formulario = document.getElementById("formulario");
 const ingredientes = [];
+const recetasElegidas = [];
 
 function pintarTabla(collection = []) {
   tablaIngredientes.innerHTML = "";
@@ -10,7 +11,7 @@ function pintarTabla(collection = []) {
     record.innerHTML = `
       <td scope="row">${id}</td>
       <td>${ingrediente}</td>
-      <td><button class="eliminar" data-index="${index}">Eliminar</button></td>
+      <td><button class="eliminar ingredients__btneliminar" data-index="${index}"><i class="fa-regular fa-trash-can"></i></button></td>
     `;
     tablaIngredientes.append(record);
   });
@@ -49,7 +50,32 @@ function clearInput() {
   document.getElementById("nombreIngrediente").value = "";
 }
 
+const buscar = document.getElementById("buscar");
+
+function buscarReceta() {
+  let find = false;
+  for (let i = 0; i < ingredientes.length; i++) {
+    for (let j = 0; j < recetas.length; j++) {
+      find = recetas[j].ingredientes.includes(ingredientes[i]);
+      let recetasElegidasRepetidas = recetasElegidas.find(
+        (unaReceta) => unaReceta == recetas[j].nombre
+      );
+      if (find && !recetasElegidasRepetidas) {
+        recetasElegidas.push(recetas[j].nombre);
+        console.log(recetasElegidas);
+      }
+    }
+  }
+}
+
 formulario.addEventListener("submit", (event) => {
   event.preventDefault();
   mostrarReceta();
 });
+
+buscar.addEventListener("click",(event) => {
+  buscarReceta();
+  if(!recetasElegidas){
+    console.log(recetasElegidas);
+  }
+})

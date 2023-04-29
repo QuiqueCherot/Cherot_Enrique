@@ -59,12 +59,17 @@
         width: 40%;
     }
     &__ingresados{
-        margin: 2.5em;
-        
+        margin: 2.5em; 
+        text-align: center;       
     }
     &__table{
         width: 40%;
-        
-
+        text-align: center;
+        margin: auto;
+    
+    }
+    &__btneliminar{
+        border: none;
+        text-align: center;
     }
 }
