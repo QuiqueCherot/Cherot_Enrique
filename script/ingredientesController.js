@@ -1,68 +1,55 @@
-function pintarTabla(collection = []) {
-  // Pintar la tabla de carreras en la UI
-  let ingredientTable = document.getElementById("ingredientTable");
-  ingredientTable.innerHTML = "";
-  collection.forEach((element) => {
-    let record = document.createElement("tr");
-    //<td scope="row">${element.id}</td>
-    record.innerHTML = `<tr>      
-      <td scope="row">"1"</td>
-      <td>${element.toString()}</td>
-    </tr>`;
-    ingredientTable.append(record);
-  });
-}
-function validarIngrediente(ingredienteIngresado) {
-  return ( ingredienteIngresado || false); 
-}
-
-function buscarIngrediente(ingredienteIngresado) {
-  return ingredientes.find(
-    (element) => element === ingredienteIngresado
-  );
-}
-
-let ingredientes = new Array();
+const tablaIngredientes = document.getElementById("ingredientTable");
 const formulario = document.getElementById("formulario");
+const ingredientes = [];
+
+function pintarTabla(collection = []) {
+  tablaIngredientes.innerHTML = "";
+  collection.forEach((ingrediente, index) => {
+    const record = document.createElement("tr");
+    const id = index + 1;
+    record.innerHTML = `
+      <td scope="row">${id}</td>
+      <td>${ingrediente}</td>
+      <td><button class="eliminar" data-index="${index}">Eliminar</button></td>
+    `;
+    tablaIngredientes.append(record);
+  });
+
+  // Agregar evento de clic a cada botón "Eliminar"
+  const botonesEliminar = document.querySelectorAll(".eliminar");
+  for (let i = 0; i < botonesEliminar.length; i++) {
+    botonesEliminar[i].addEventListener("click", (event) => {
+      const index = event.target.getAttribute("data-index");
+      ingredientes.splice(index, 1);
+      pintarTabla(ingredientes);
+    });
+  }
+}
+
+function buscarIngrediente(ingrediente) {
+  return ingredientes.includes(ingrediente);
+}
 
 function mostrarReceta() {
   const ingredienteIngresado =
     document.getElementById("nombreIngrediente").value;
-  // Buscamos y validamos, o creamos una Receta
-  let unIngrediente = buscarIngrediente(ingredienteIngresado);
-  let ingredienteValidado = validarIngrediente(ingredienteIngresado);
-  if (!unIngrediente && ingredienteValidado) {
-    // Añadir el ingrediente ingresado por el usuario a la lista de ingredientes
-    ingredientes.push(ingredienteIngresado);
-    // msj exitoso
-    
-  } else {
-    // msj error
-    console.log(
-      "EL INGREDIENTE CON EL NOMBRE (" +
-        ingredienteIngresado +
-        ") YA FUE INGRESADO."
-    );
+  if (!ingredienteIngresado) {
     return false;
   }
-
-  return true;
+  if (buscarIngrediente(ingredienteIngresado)) {
+    console.log(`El ingrediente "${ingredienteIngresado}" ya fue ingresado.`);
+    return false;
+  }
+  ingredientes.push(ingredienteIngresado);
+  pintarTabla(ingredientes);
+  clearInput();
 }
 
-// Función para limpiar el input
 function clearInput() {
   document.getElementById("nombreIngrediente").value = "";
 }
 
 formulario.addEventListener("submit", (event) => {
   event.preventDefault();
-  let resultado = mostrarReceta();
-  if(resultado){
-    pintarTabla(ingredientes);
-    clearInput();
-
-  }
-  return resultado;
+  mostrarReceta();
 });
-
-  
