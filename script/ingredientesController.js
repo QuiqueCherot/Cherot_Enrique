@@ -1,11 +1,13 @@
 const tablaIngredientes = document.getElementById("ingredientTable");
 const formulario = document.getElementById("formulario");
-const ingredientes = [];
+let ingredienteJSON = [];
+let ingredientes = [];
 const recetasElegidas = [];
 
-function pintarTabla(collection = []) {
+
+function crearLista(lista = []) {
   tablaIngredientes.innerHTML = "";
-  collection.forEach((ingrediente, index) => {
+  lista.forEach((ingrediente, index) => {
     const record = document.createElement("tr");
     const id = index + 1;
     record.innerHTML = `
@@ -15,17 +17,37 @@ function pintarTabla(collection = []) {
     `;
     tablaIngredientes.append(record);
   });
-
-  // Agregar evento de clic a cada botón "Eliminar"
-  const botonesEliminar = document.querySelectorAll(".eliminar");
-  for (let i = 0; i < botonesEliminar.length; i++) {
-    botonesEliminar[i].addEventListener("click", (event) => {
-      const index = event.target.getAttribute("data-index");
-      ingredientes.splice(index, 1);
-      pintarTabla(ingredientes);
-    });
-  }
 }
+
+if (localStorage.getItem("ingrediente")) {
+  ingredienteJSON = JSON.parse(localStorage.getItem("ingrediente"));
+  ingredientes = ingredienteJSON;
+  crearLista(ingredientes);
+} 
+// Agregar evento de clic a cada botón "Eliminar"
+const botonesEliminar = document.querySelectorAll(".eliminar");
+for (let i = 0; i < botonesEliminar.length; i++) {
+  botonesEliminar[i].addEventListener("click", (event) => {
+    const index = event.target.getAttribute("data-index");
+    ingredientes.splice(index, 1);
+    eliminarIngrediente(index);
+    crearLista(ingredientes);
+
+  });
+}
+
+function eliminarIngrediente(index) {
+  // Obtener el array de ingredientes almacenado en el Local Storage
+  let ingredientesLS = JSON.parse(localStorage.getItem('ingrediente'));
+  
+  // Eliminar el elemento correspondiente del array
+  ingredientesLS.splice(index, 1);
+
+  // Guardar el array actualizado en el Local Storage
+  localStorage.setItem('ingrediente', JSON.stringify(ingredientesLS));
+}
+
+
 
 function buscarIngrediente(ingrediente) {
   return ingredientes.includes(ingrediente);
@@ -34,6 +56,7 @@ function buscarIngrediente(ingrediente) {
 function mostrarReceta() {
   const ingredienteIngresado =
     document.getElementById("nombreIngrediente").value;
+    //Almacena en local storage todos los ingredientes ingresados
   if (!ingredienteIngresado) {
     return false;
   }
@@ -42,7 +65,9 @@ function mostrarReceta() {
     return false;
   }
   ingredientes.push(ingredienteIngresado);
-  pintarTabla(ingredientes);
+  //Almacenamos en el local storage todas las carreras.
+  localStorage.setItem("ingrediente", JSON.stringify(ingredientes));
+  crearLista(ingredientes);
   clearInput();
 }
 
@@ -63,7 +88,9 @@ function buscarReceta() {
       if (find && !recetasElegidasRepetidas) {
         recetasElegidas.push(recetas[j].nombre);
         console.log(recetasElegidas);
-      }
+      } else {
+        break;
+      }      
     }
   }
 }
@@ -73,9 +100,9 @@ formulario.addEventListener("submit", (event) => {
   mostrarReceta();
 });
 
-buscar.addEventListener("click",(event) => {
+buscar.addEventListener("click", (event) => {
   buscarReceta();
-  if(!recetasElegidas){
+  if (!recetasElegidas) {
     console.log(recetasElegidas);
   }
-})
+});
