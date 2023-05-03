@@ -62,9 +62,11 @@ function mostrarReceta() {
     return false;
   }
   if (buscarIngrediente(ingredienteIngresado)) {
+    //msj error
     console.log(`El ingrediente "${ingredienteIngresado}" ya fue ingresado.`);
     return false;
   }
+  //msj exitoso
   ingredientes.push(ingredienteIngresado);
   //Almacenamos en el local storage todas las carreras.
   localStorage.setItem("ingrediente", JSON.stringify(ingredientes));
@@ -76,7 +78,23 @@ function clearInput() {
   document.getElementById("nombreIngrediente").value = "";
 }
 
+//CREAR TABLA DE RECETAS ENCONTRADAS
+const tablaRecetasEncontradas = document.getElementById("recipeTable");
 const buscar = document.getElementById("buscar");
+
+function crearListaRecetas(lista = []) {
+  tablaRecetasEncontradas.innerHTML = "";
+  lista.forEach((receta, index) => {
+    const record = document.createElement("tr");
+    const id = index + 1;
+    record.innerHTML = `
+      <td scope="row">${id}</td>
+      <td>${receta}</td>
+      <td><button class="verMas ingredients__btnVerMas" data-index="${index}"><i class="fa-regular fa-trash-can"></i></button></td>
+    `;
+    tablaRecetasEncontradas.append(record);
+  });
+}
 
 function buscarReceta() {
   let find = false;
@@ -88,7 +106,6 @@ function buscarReceta() {
       );
       if (find && !recetasElegidasRepetidas) {
         recetasElegidas.push(recetas[j].nombre);
-        console.log(recetasElegidas);
       } else {
         break;
       }      
@@ -103,7 +120,7 @@ formulario.addEventListener("submit", (event) => {
 
 buscar.addEventListener("click", (event) => {
   buscarReceta();
-  if (!recetasElegidas) {
-    console.log(recetasElegidas);
+  if (recetasElegidas.length > 0) {
+    crearListaRecetas(recetasElegidas);
   }
 });

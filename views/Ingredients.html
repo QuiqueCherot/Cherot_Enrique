@@ -44,12 +44,14 @@
                 <button type="submit" class="btn btn-primary">Ingresar</button>
                 <button type="button" 
                 id ="buscar" class="btn btn-primary">Buscar</button>
-              </div>
+            </div>
       </form>
 
         </hr>
 
-        <h3 class="ingredients__ingresados">Ingredientes Ingresados</h3>
+        <h3 class="ingredients__ingresados">
+          Ingredientes Ingresados
+        </h3>
         <table class="table table-striped ingredients__table">
             <thead>
               <tr>
@@ -60,6 +62,19 @@
             </thead>
             <tbody id="ingredientTable"></tbody>
           </table>
+          <h3 class="ingredients__recipe">
+            Recetas Encontradas
+          </h3>
+          <table class="table table-striped ingredients__recipetb">
+              <thead>
+                <tr>
+                  <th>Número</th>
+                  <th>Recetas</th>
+                  <th id="verMas"></th>
+                </tr>
+              </thead>
+              <tbody id="recipeTable"></tbody>
+            </table>
         </div>
     </main>    
     <script src="../script/ingredientesController.js"></script>
