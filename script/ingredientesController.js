@@ -17,14 +17,7 @@ function crearLista(lista = []) {
     `;
     tablaIngredientes.append(record);
   });
-}
-
-if (localStorage.getItem("ingrediente")) {
-  ingredienteJSON = JSON.parse(localStorage.getItem("ingrediente"));
-  ingredientes = ingredienteJSON;
-  crearLista(ingredientes);
-} 
-// Agregar evento de clic a cada botón "Eliminar"
+  // Agregar evento de clic a cada botón "Eliminar"
 const botonesEliminar = document.querySelectorAll(".eliminar");
 for (let i = 0; i < botonesEliminar.length; i++) {
   botonesEliminar[i].addEventListener("click", (event) => {
@@ -35,6 +28,14 @@ for (let i = 0; i < botonesEliminar.length; i++) {
 
   });
 }
+}
+
+if (localStorage.getItem("ingrediente")) {
+  ingredienteJSON = JSON.parse(localStorage.getItem("ingrediente"));
+  ingredientes = ingredienteJSON;
+  crearLista(ingredientes);
+} 
+
 
 function eliminarIngrediente(index) {
   // Obtener el array de ingredientes almacenado en el Local Storage
