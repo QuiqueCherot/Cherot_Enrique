@@ -158,6 +158,13 @@
   .ingredients__btneliminar {
     border: none;
     text-align: center; }
+  .ingredients__recipe {
+    margin: 2.5em;
+    text-align: center; }
+  .ingredients__recipetb {
+    width: 40%;
+    text-align: center;
+    margin: auto; }
 
 /*AQUI COMIENZA RANDOM PICK*/
 .header__random {
