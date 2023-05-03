@@ -86,19 +86,4 @@ let recetas = [
 ];
 
 
-/*CREAMOS COMPARADOR DE ARRAYS
-
-  //creamos recetasParaMostrar sólo a fines de mostrar el Alert para la preEntrega2
-}
-let recetasParaMostrar = recetasElegidas.join(", ");
-if (
-  !recetasElegidas.length &&
-  eleccionInicial.toLocaleLowerCase == "usar mis ingredientes"
-) {
-  alert("No tenemos una receta para tus ingredientes.");
-} else if (recetasElegidas.length) {
-  alert("Con tus ingredientes, podes cocinar: " + recetasParaMostrar);
-}
-*/
-
 
