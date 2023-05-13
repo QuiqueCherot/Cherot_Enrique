@@ -48,7 +48,22 @@ function eliminarIngrediente(index) {
   localStorage.setItem('ingrediente', JSON.stringify(ingredientesLS));
 }
 
-
+/*swal({
+  title: "Are you sure?",
+  text: "Once deleted, you will not be able to recover this imaginary file!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    swal("Poof! Your imaginary file has been deleted!", {
+      icon: "success",
+    });
+  } else {
+    swal("Your imaginary file is safe!");
+  }
+});*/
 
 function buscarIngrediente(ingrediente) {
   return ingredientes.includes(ingrediente);
@@ -66,7 +81,7 @@ function mostrarReceta() {
     console.log(`El ingrediente "${ingredienteIngresado}" ya fue ingresado.`);
     return false;
   }
-  //msj exitoso
+  msjSuccess();
   ingredientes.push(ingredienteIngresado);
   //Almacenamos en el local storage todas las carreras.
   localStorage.setItem("ingrediente", JSON.stringify(ingredientes));
