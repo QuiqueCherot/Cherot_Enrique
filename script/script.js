@@ -73,7 +73,7 @@ let receta9 = new Receta(
   "20 min"
 );
 
-let recetas = [
+const recetas = [
   receta1,
   receta2,
   receta3,

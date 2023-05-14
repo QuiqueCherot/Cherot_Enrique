@@ -11,3 +11,16 @@ function msjSuccess() {
   
 }
 
+const msjError = document.getElementById("msj");
+function msjErroneo() {
+  msjError.classList.add("ingredients__ingresados-error");
+  const record = document.createElement("p");
+  record.innerHTML = `<p> El ingrediente ya fue ingresado. Intente con otro ingrediente.</p>`;
+  msjExitoso.append(record);
+  setTimeout(() => {
+    msjError.innerHTML = "";
+    msjError.classList.remove("ingredients__ingresados-error");
+  }, 2000);
+  
+}
+
