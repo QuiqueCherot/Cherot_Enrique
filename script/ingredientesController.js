@@ -3,8 +3,10 @@ const formulario = document.getElementById("formulario");
 let ingredienteJSON = [];
 let ingredientes = [];
 const recetasElegidas = [];
+const tablaRecetasEncontradas = document.getElementById("recipeTable");
+const buscar = document.getElementById("buscar");
 
-function crearLista(lista = []) {
+function renderizarIngredientes(lista = []) {
   tablaIngredientes.innerHTML = "";
   lista.forEach((ingrediente, index) => {
     const record = document.createElement("tr");
@@ -23,7 +25,7 @@ function crearLista(lista = []) {
       const index = event.target.getAttribute("data-index");
       ingredientes.splice(index, 1);
       eliminarIngrediente(index);
-      crearLista(ingredientes);
+      renderizarIngredientes(ingredientes);
     });
   }
 }
@@ -31,7 +33,7 @@ function crearLista(lista = []) {
 if (localStorage.getItem("ingrediente")) {
   ingredienteJSON = JSON.parse(localStorage.getItem("ingrediente"));
   ingredientes = ingredienteJSON;
-  crearLista(ingredientes);
+  renderizarIngredientes(ingredientes);
 }
 
 function eliminarIngrediente(index) {
@@ -50,19 +52,20 @@ function buscarIngrediente(ingrediente) {
 }
 
 function mostrarReceta() {
-  const ingredienteIngresado =
-    document.getElementById("nombreIngrediente").value.trim();
+  const ingredienteIngresado = document
+    .getElementById("nombreIngrediente")
+    .value.trim();
   if (!ingredienteIngresado) {
     return false;
   }
   if (buscarIngrediente(ingredienteIngresado)) {
-   msjErroneo();
+    msjErroneo();
   } else {
     msjSuccess();
     ingredientes.push(ingredienteIngresado);
     //Almacenamos en el local storage todas las carreras.
     localStorage.setItem("ingrediente", JSON.stringify(ingredientes));
-    crearLista(ingredientes);
+    renderizarIngredientes(ingredientes);
     clearInput();
   }
 }
@@ -72,42 +75,32 @@ function clearInput() {
 }
 
 //CREAR TABLA DE RECETAS ENCONTRADAS
-const tablaRecetasEncontradas = document.getElementById("recipeTable");
-const buscar = document.getElementById("buscar");
 
 function crearListaRecetas(data) {
   tablaRecetasEncontradas.innerHTML = "";
-  data.meals.forEach((meal, index) => {
-    const record = document.createElement("tr");
-    const id = index + 1;
-    record.innerHTML = `
-      <td scope="row">${id}</td>
-      <td>${meal.strMeal}</td>
-      <td><button class="ingredients__btneliminar ingredients__btnVerMas" data-index="${index}"><i class="fa-solid fa-plus"></i></button></td>
-    `;
-    tablaRecetasEncontradas.append(record);
-  });
-  // Agregar evento de clic a cada botón "verMas"
-  const botonesVerMas = document.querySelectorAll(".ingredients__btnVerMas");
-  for (let i = 0; i < botonesVerMas.length; i++) {
-    botonesVerMas[i].addEventListener("click", (event) => {
-      const index = event.target.getAttribute("data-index");
-      verReceta(recetasElegidas[index]);
-      console.log(recetasElegidas[index]);
-      console.log("recetasElegidas:", recetasElegidas);
-      console.log("index:", index);
+  if (data.meals !== null) {
+    data.meals.forEach((meal, index) => {
+      const record = document.createElement("tr");
+      const id = index + 1;
+      record.innerHTML = `
+        <td scope="row">${id}</td>
+        <td>${meal.strMeal}</td>
+        <td>${meal.idMeal}</td>
+        <td><button class="ingredients__btneliminar ingredients__btnVerMas" data-index="${index}"><i class="fa-solid fa-plus"></i></button></td>
+      `;
+      tablaRecetasEncontradas.append(record);
+      // Agregar evento de clic a cada botón "verMas"
+      const botonVerMas = document.querySelectorAll(".ingredients__btnVerMas");
+      for (let i = 0; i < botonVerMas.length; i++) {
+        botonVerMas[i].addEventListener("click", (event) => {
+          const index = event.target.getAttribute("data-index");
+          const receta = data.meals[index].strMeal;
+          console.log(receta);
+          console.log(index);
+          verReceta(receta);
+        });
+      }
     });
-  }
-}
-// Buscamos receta recorriendo el array ingredientes y comparando reemplazando en el llamado a la API.
-function buscarReceta() {
-  for (let i = 0; i < ingredientes.length; i++) {
-    let ingrediente = ingredientes[i]
-    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingrediente}`)
-      .then(response => response.json())
-      .then(data => {
-        crearListaRecetas(data);
-      })   
   }
 }
 
@@ -115,18 +108,18 @@ function verReceta(receta) {
   Swal.fire({
     title: receta,
     html: `
-    <h4>Ingredientes</h4>
-    <p>${receta}</p>
-    `,
+      <h4>Ingredientes</h4>
+      <p>${receta}</p>
+      `,
     /*
-      <h4>Ingredientes:</h4>
-      <ul>
-        ${receta.ingredientes.map(ingrediente => `<li>${ingrediente}</li>`).join('')}
-      </ul>
-      <h4>Pasos:</h4>
-      <ol>
-        ${receta.pasos.map(paso => `<li>${paso}</li>`).join('')}
-      </ol>*/
+        <h4>Ingredientes:</h4>
+        <ul>
+          ${receta.ingredientes.map(ingrediente => `<li>${ingrediente}</li>`).join('')}
+        </ul>
+        <h4>Pasos:</h4>
+        <ol>
+          ${receta.pasos.map(paso => `<li>${paso}</li>`).join('')}
+        </ol>*/
     showClass: {
       popup: "animate__animated animate__fadeInDown",
     },
@@ -134,6 +127,18 @@ function verReceta(receta) {
       popup: "animate__animated animate__fadeOutUp",
     },
   });
+}
+
+// Buscamos receta recorriendo el array ingredientes y comparando reemplazando en el llamado a la API.
+function buscarReceta() {
+  for (let i = 0; i < ingredientes.length; i++) {
+    let ingrediente = ingredientes[i];
+    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingrediente}`)
+      .then((response) => response.json())
+      .then((data) => {
+        crearListaRecetas(data);
+      });
+  }
 }
 
 formulario.addEventListener("submit", (event) => {
