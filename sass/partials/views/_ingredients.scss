@@ -100,9 +100,12 @@
         margin: 2.5em; 
         text-align: center;       
     }
-    &__recipetb{
-        width: 40%;
+    &__card{
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 4px 21px 1px rgba(0, 0, 0, 0.5);
+        margin: 2rem 1rem;
         text-align: center;
-        margin: auto;
-    }   
+        height: 25rem;
+    } 
 }
