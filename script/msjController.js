@@ -24,3 +24,18 @@ function msjErroneo() {
   
 }
 
+function mostrarError() {
+  Swal.fire({
+    icon: 'error',
+    title: 'Oops...',
+    text: 'No hay recetas con esos ingredientes. Prueba con los principales.',
+  });
+}
+
+function errorInesperado() {
+  Swal.fire({
+    icon: 'error',
+    title: 'Oops...',
+    text: 'Ha ocurrido un error inesperado. Porfavor intente nuevamente.',
+  });
+}
