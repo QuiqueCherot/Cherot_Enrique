@@ -1,13 +1,18 @@
+// Obtener elementos del DOM
 const tablaIngredientes = document.getElementById("ingredientTable");
 const formulario = document.getElementById("formulario");
-let ingredienteJSON = [];
-let ingredientes = [];
-const recetasElegidas = [];
 const tablaRecetasEncontradas = document.getElementById("recipeTable");
 const buscar = document.getElementById("buscar");
 const listaReceta = document.getElementById("comida");
 const verMasBtns = document.querySelectorAll(".verMas");
 
+// Variables de datos
+let ingredienteJSON = [];
+let ingredientes = [];
+const recetasElegidas = [];
+let urlInstrucciones = "";
+
+// Función para renderizar la lista de ingredientes en la tabla
 function renderizarIngredientes(lista = []) {
   tablaIngredientes.innerHTML = "";
   lista.forEach((ingrediente, index) => {
@@ -31,24 +36,19 @@ function renderizarIngredientes(lista = []) {
     });
   }
 }
-
+// Obtener los ingredientes almacenados en el Local Storage al cargar la página
 if (localStorage.getItem("ingrediente")) {
   ingredienteJSON = JSON.parse(localStorage.getItem("ingrediente"));
   ingredientes = ingredienteJSON;
   renderizarIngredientes(ingredientes);
 }
-
+// Eliminar un ingrediente del Local Storage y actualizar la tabla de ingredientes
 function eliminarIngrediente(index) {
-  // Obtener el array de ingredientes almacenado en el Local Storage
   let ingredientesLS = JSON.parse(localStorage.getItem("ingrediente"));
-
-  // Eliminar el elemento correspondiente del array
   ingredientesLS.splice(index, 1);
-
-  // Guardar el array actualizado en el Local Storage
   localStorage.setItem("ingrediente", JSON.stringify(ingredientesLS));
 }
-
+//Buscar si un ingrediente ya está en la lista
 function buscarIngrediente(ingrediente) {
   return ingredientes.includes(ingrediente);
 }
@@ -65,7 +65,7 @@ function mostrarReceta() {
   } else {
     msjSuccess();
     ingredientes.push(ingredienteIngresado);
-    //Almacenamos en el local storage todas las carreras.
+    //Almacenamos en el local storage todas los ingredientes.
     localStorage.setItem("ingrediente", JSON.stringify(ingredientes));
     renderizarIngredientes(ingredientes);
     clearInput();
@@ -85,7 +85,6 @@ function buscarReceta() {
       .then((data) => {
         if (data.meals) {
           mostrarRecetas(data.meals);
-          console.log(data.meals);
         } else {
           mostrarError();
         }
@@ -111,6 +110,10 @@ function mostrarRecetas(meals) {
   });
   listaReceta.innerHTML = html;
 }
+//Obtenemos URl de la API como parámetro para redirigir al usuario.
+function videoInstrucciones(urlInstrucciones) {
+  window.location.href = urlInstrucciones;
+}
 
 formulario.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -123,59 +126,44 @@ buscar.addEventListener("click", (event) => {
     crearListaRecetas(recetasElegidas);
   }
 });
-/*por acá está el tema de ver todas las recetas, acceder a todos los ids, acceder a todos los ingredientes
-fetch('https://www.themealdb.com/api/json/v1/1/list.php?i=list')
-  .then((response) => response.json())
-  .then((data) => {
-    console.log(data);
-    console.log(data.meals.strInstructions);
-  })
-  .catch((error) => {
-    console.log('Error:', error);
-  });
-  
-fetch('https://www.themealdb.com/api/json/v1/1/lookup.php?i=52772')
-  .then((response) => response.json())
-  .then((data) => {
-    console.log(data);
-    console.log(data.meals.strInstructions);
-  })
-  .catch((error) => {
-    console.log('Error:', error);
-  });
-*/
 
-
-  listaReceta.addEventListener("click", (event) => {
-    if (event.target.classList.contains("verMas")) {
-      const id = event.target.getAttribute("data-id");
-      console.log(id);
-      fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
-        .then((response) => response.json())
-        .then((data) => {
-          const receta = data.meals[0]; // Acceder a la receta individual usando [0]
-          const instrucciones= receta.strInstructions;
-          const nombreReceta = receta.strMeal;
-          const imgReceta = receta.strMealThumb;          
-          for (let i = 1; i <= 20; i++) {
-            const ingrediente = receta[`strIngredient${i}`];
-            if (ingrediente) {
-              Swal.fire({
-                imageUrl: imgReceta,
-                imageHeight: 500,
-                imageAlt: nombreReceta,
-                title: nombreReceta,
-                text: instrucciones,
-                icon: "success",
-                confirmButtonText: "Cerrar"
-              });
-            }
+listaReceta.addEventListener("click", (event) => {
+  if (event.target.classList.contains("verMas")) {
+    const id = event.target.getAttribute("data-id");
+    fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        const receta = data.meals[0]; // Acceder a la receta individual usando [0]
+        const instrucciones = receta.strInstructions;
+        const nombreReceta = receta.strMeal;
+        const imgReceta = receta.strMealThumb;
+        urlInstrucciones = receta.strYoutube;
+        let ingredientes = "";
+        for (let i = 1; i <= 20; i++) {
+          const ingrediente = receta[`strIngredient${i}`];
+          if (ingrediente) {
+            ingredientes += `${ingrediente}\n`;
           }
-        })
-        .catch((error) => {
-          console.log('Error:', error);
-        });
-    }
-  });
-  
-
+          if (ingrediente) {
+            Swal.fire({
+              imageUrl: imgReceta,
+              imageHeight: 500,
+              imageAlt: "Nombre Receta",
+              title: nombreReceta,
+              html: `
+                <div>
+                  <h3>Ingredientes:</h3>
+                  <p>${ingredientes}\n</p>                   
+                  <button class="btn btn-primary" onclick="videoInstrucciones(urlInstrucciones)">Haz clic en mí</button>
+                </div>`,
+              icon: "success",
+              confirmButtonText: "Cerrar",
+            });
+          }
+        }
+      })
+      .catch((error) => {
+        console.log("Error:", error);
+      });
+  }
+});
