@@ -139,26 +139,33 @@ listaReceta.addEventListener("click", (event) => {
         const imgReceta = receta.strMealThumb;
         urlInstrucciones = receta.strYoutube;
         let ingredientes = "";
+        let ingredienteLista = [];
         for (let i = 1; i <= 20; i++) {
           const ingrediente = receta[`strIngredient${i}`];
           if (ingrediente) {
-            ingredientes += `${ingrediente}\n`;
+            ingredienteLista.push(ingrediente);
           }
-          if (ingrediente) {
-            Swal.fire({
-              imageUrl: imgReceta,
-              imageHeight: 500,
-              imageAlt: "Nombre Receta",
-              title: nombreReceta,
-              html: `
-                <div>
-                  <h3>Ingredientes:</h3>
-                  <p>${ingredientes}\n</p>                   
-                  <button class="btn btn-primary" onclick="videoInstrucciones(urlInstrucciones)">Haz clic en mí</button>
-                </div>`,
-              icon: "success",
-              confirmButtonText: "Cerrar",
-            });
+          if (ingredienteLista.length > 0) {
+            const ingredientesHTML = `<ol class="random__ingredients">${ingredienteLista
+              .map((ingrediente) => `<li>${ingrediente}</li>`)
+              .join(``)}</ol>`;
+              Swal.fire({
+                imageUrl: imgReceta,
+                imageHeight: 500,
+                imageAlt: "Nombre Receta",
+                title: nombreReceta,
+                html: `
+                  <div>
+                    <h3>Ingredientes:</h3>
+                    <p>${ingredientesHTML}\n</p>                   
+                    <button class="btn btn-primary ingredients__urlBtn" onclick="videoInstrucciones(urlInstrucciones)"><i class="fas fa-tv"></i> Ver Paso a Paso</button>
+                  </div>`,
+                showConfirmButton: false, 
+                showCloseButton: true,
+                icon: "success",
+              });
+              
+              
           }
         }
       })

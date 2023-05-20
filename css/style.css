@@ -232,6 +232,9 @@
   color: white;
   font-size: 2.5em; }
 
+.random__ingredients {
+  text-align: justify; }
+
 /*  utilities
     reset
     layouts
