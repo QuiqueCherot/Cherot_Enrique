@@ -11,6 +11,8 @@ let ingredienteJSON = [];
 let ingredientes = [];
 const recetasElegidas = [];
 let urlInstrucciones = "";
+const recipesId = [];
+const recetasEncontradas = [];
 
 // Función para renderizar la lista de ingredientes en la tabla
 function renderizarIngredientes(lista = []) {
@@ -53,7 +55,7 @@ function buscarIngrediente(ingrediente) {
   return ingredientes.includes(ingrediente);
 }
 
-function mostrarReceta() {
+function mostrarIngredientes() {
   const ingredienteIngresado = document
     .getElementById("nombreIngrediente")
     .value.trim();
@@ -78,24 +80,44 @@ function clearInput() {
 
 // Buscamos receta recorriendo el array ingredientes y comparando reemplazando en el llamado a la API - adicionamos la creación de cards para cada receta encontrada.
 function buscarReceta() {
-  for (let i = 0; i < ingredientes.length; i++) {
+  /* for (let i = 0; i < ingredientes.length; i++) {
     let ingrediente = ingredientes[i];
     fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingrediente}`)
       .then((response) => response.json())
       .then((data) => {
-        if (data.meals) {
-          mostrarRecetas(data.meals);
-        } else {
-          mostrarError();
-        }
-      })
+ACA METIMOS COMENTARIO PARA PROBAR LA NUEVA FUNCIÓN. SI NO FRULA BORRAR LO DE ABAJO HASTA DONDE INDIQUE
+        */
+  const fetchPromises = ingredientes.map((ingrediente) => {
+    return fetch(
+      `https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingrediente}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("acá el array", data);
+        data.meals.forEach((meal) => {
+          recipesId.push(meal.idMeal);
+        });
+      });
+  });
+
+  Promise.all(fetchPromises).then(() => {
+    comparandoIngredientes();
+  });
+  /*HASTA ACÁ */
+  if (data.meals) {
+    mostrarRecetas(data.meals);
+  } else {
+    mostrarError();
+  }
+  /*      })
       .catch((error) => {
         errorInesperado();
       });
-  }
+  }*/
 }
 
 function mostrarRecetas(meals) {
+  // en vez de meal que traiga el array recetasEncontradas
   let html = "";
   meals.forEach((meal) => {
     html += `
@@ -117,7 +139,7 @@ function videoInstrucciones(urlInstrucciones) {
 
 formulario.addEventListener("submit", (event) => {
   event.preventDefault();
-  mostrarReceta();
+  mostrarIngredientes();
 });
 
 buscar.addEventListener("click", (event) => {
@@ -138,7 +160,6 @@ listaReceta.addEventListener("click", (event) => {
         const nombreReceta = receta.strMeal;
         const imgReceta = receta.strMealThumb;
         urlInstrucciones = receta.strYoutube;
-        let ingredientes = "";
         let ingredienteLista = [];
         for (let i = 1; i <= 20; i++) {
           const ingrediente = receta[`strIngredient${i}`];
@@ -149,23 +170,21 @@ listaReceta.addEventListener("click", (event) => {
             const ingredientesHTML = `<ol class="random__ingredients">${ingredienteLista
               .map((ingrediente) => `<li>${ingrediente}</li>`)
               .join(``)}</ol>`;
-              Swal.fire({
-                imageUrl: imgReceta,
-                imageHeight: 500,
-                imageAlt: "Nombre Receta",
-                title: nombreReceta,
-                html: `
+            Swal.fire({
+              imageUrl: imgReceta,
+              imageHeight: 500,
+              imageAlt: "Nombre Receta",
+              title: nombreReceta,
+              html: `
                   <div>
                     <h3>Ingredientes:</h3>
                     <p>${ingredientesHTML}\n</p>                   
                     <button class="btn btn-primary ingredients__urlBtn" onclick="videoInstrucciones(urlInstrucciones)"><i class="fas fa-tv"></i> Ver Paso a Paso</button>
                   </div>`,
-                showConfirmButton: false, 
-                showCloseButton: true,
-                icon: "success",
-              });
-              
-              
+              showConfirmButton: false,
+              showCloseButton: true,
+              icon: "success",
+            });
           }
         }
       })
@@ -174,3 +193,57 @@ listaReceta.addEventListener("click", (event) => {
       });
   }
 });
+
+async function buscarRecetas2() {
+  const recipesId = [];
+  const recetasEncontradas = [];
+
+  const fetchPromises = ingredientes.map((ingrediente) => {
+    return fetch(
+      `https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingrediente}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("acá el array", data);
+        data.meals.forEach((meal) => {
+          recipesId.push(meal.idMeal);
+        });
+      });
+  });
+
+  await Promise.all(fetchPromises);
+
+  for (const id of recipesId) {
+    const response = await fetch(
+      `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
+    );
+    const data = await response.json();
+    const receta = data.meals[0];
+    let ingredienteLista = [];
+
+    for (let i = 1; i <= 20; i++) {
+      const ingrediente = receta[`strIngredient${i}`];
+      if (ingrediente) {
+        ingredienteLista.push(ingrediente);
+      }
+    }
+
+    if (ingredienteLista.length > 0) {
+      const todosPresentes = ingredientes.every((ingrediente) =>
+        ingredienteLista.includes(ingrediente)
+      );
+
+      if (todosPresentes) {
+        recetasEncontradas.push(receta.idMeal);
+      }
+    }
+  }
+
+  console.log(recetasEncontradas);
+}
+
+buscarRecetas2();
+
+
+
+

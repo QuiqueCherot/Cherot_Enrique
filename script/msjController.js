@@ -28,7 +28,7 @@ function mostrarError() {
   Swal.fire({
     icon: 'error',
     title: 'Oops...',
-    text: 'No hay recetas con esos ingredientes. Prueba con los principales.',
+    text: 'No encontramos ninguna receta. Probá ingresando ingredientes principales únicamente.',
   });
 }
 
