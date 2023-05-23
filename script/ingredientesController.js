@@ -12,7 +12,7 @@ let ingredientes = [];
 const recetasElegidas = [];
 let urlInstrucciones = "";
 const recipesId = [];
-const recetasEncontradas = [];
+let recetasEncontradas = [];
 
 // Función para renderizar la lista de ingredientes en la tabla
 function renderizarIngredientes(lista = []) {
@@ -58,7 +58,9 @@ function buscarIngrediente(ingrediente) {
 function mostrarIngredientes() {
   const ingredienteIngresado = document
     .getElementById("nombreIngrediente")
-    .value.trim();
+    .value.trim()
+    .toLowerCase();
+    console.log(ingredienteIngresado);
   if (!ingredienteIngresado) {
     return false;
   }
@@ -78,22 +80,15 @@ function clearInput() {
   document.getElementById("nombreIngrediente").value = "";
 }
 
-// Buscamos receta recorriendo el array ingredientes y comparando reemplazando en el llamado a la API - adicionamos la creación de cards para cada receta encontrada.
+function clearRecetasEncontradas() {
+  recetasEncontradas = [];
+}
+
 function buscarReceta() {
-  /* for (let i = 0; i < ingredientes.length; i++) {
-    let ingrediente = ingredientes[i];
-    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingrediente}`)
-      .then((response) => response.json())
-      .then((data) => {
-ACA METIMOS COMENTARIO PARA PROBAR LA NUEVA FUNCIÓN. SI NO FRULA BORRAR LO DE ABAJO HASTA DONDE INDIQUE
-        */
   const fetchPromises = ingredientes.map((ingrediente) => {
-    return fetch(
-      `https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingrediente}`
-    )
+    return fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingrediente}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("acá el array", data);
         data.meals.forEach((meal) => {
           recipesId.push(meal.idMeal);
         });
@@ -102,36 +97,67 @@ ACA METIMOS COMENTARIO PARA PROBAR LA NUEVA FUNCIÓN. SI NO FRULA BORRAR LO DE A
 
   Promise.all(fetchPromises).then(() => {
     comparandoIngredientes();
+    mostrarRecetas(recetasEncontradas); // Mover aquí la llamada a mostrarRecetas()
   });
-  /*HASTA ACÁ */
-  if (data.meals) {
-    mostrarRecetas(data.meals);
-  } else {
-    mostrarError();
+
+  function comparandoIngredientes() {
+    recipesId.forEach((id) => {
+      fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
+        .then((response) => response.json())
+        .then((data) => {
+          const receta = data.meals[0];
+          let ingredienteLista = [];
+
+          for (let i = 1; i <= 20; i++) {
+            const ingrediente = receta[`strIngredient${i}`];
+            if (ingrediente) {
+              ingredienteLista.push(ingrediente);
+            }
+          }
+
+          if (ingredienteLista.length > 0) {
+            const todosPresentes = ingredientes.every((ingrediente) =>
+              ingredienteLista.includes(ingrediente)
+            );
+
+            if (todosPresentes) {
+              const recetaExistente = recetasEncontradas.find(
+                (recetaEncontrada) => recetaEncontrada.idMeal === receta.idMeal
+              );
+
+              if (!recetaExistente) {
+                recetasEncontradas.push(receta);
+              }
+            }
+          }
+        });
+    });
   }
-  /*      })
-      .catch((error) => {
-        errorInesperado();
-      });
-  }*/
 }
 
+
 function mostrarRecetas(meals) {
-  // en vez de meal que traiga el array recetasEncontradas
+  console.log(meals);
   let html = "";
   meals.forEach((meal) => {
+    const idMeal = meal.idMeal;
+    const strMeal = meal.strMeal;
+    const strMealThumb = meal.strMealThumb;
+
     html += `
-      <div class="card d-inline-block ingredients__card" data-id="${meal.idMeal}" style="width: 18rem;">
-        <img src="${meal.strMealThumb}" class="card-img-top" alt="comida">
+      <div class="card d-inline-block ingredients__card" data-id="${idMeal}" style="width: 18rem;">
+        <img src="${strMealThumb}" class="card-img-top" alt="comida">
         <div class="card-body">
-          <h5 class="card-title">${meal.strMeal}</h5>
-          <a href="#" class="btn btn-primary verMas" data-id = "${meal.idMeal}">Go somewhere</a>
+          <h5 class="card-title">${strMeal}</h5>
+          <a href="#" class="btn btn-primary verMas" data-id="${idMeal}">Go somewhere</a>
         </div>
       </div>
     `;
   });
+
   listaReceta.innerHTML = html;
 }
+
 //Obtenemos URl de la API como parámetro para redirigir al usuario.
 function videoInstrucciones(urlInstrucciones) {
   window.location.href = urlInstrucciones;
@@ -142,11 +168,9 @@ formulario.addEventListener("submit", (event) => {
   mostrarIngredientes();
 });
 
-buscar.addEventListener("click", (event) => {
+buscar.addEventListener("click", () => {
+  //clearRecetasEncontradas(); con esto no salen las cards.
   buscarReceta();
-  if (recetasElegidas.length > 0) {
-    crearListaRecetas(recetasElegidas);
-  }
 });
 
 listaReceta.addEventListener("click", (event) => {
@@ -193,57 +217,4 @@ listaReceta.addEventListener("click", (event) => {
       });
   }
 });
-
-async function buscarRecetas2() {
-  const recipesId = [];
-  const recetasEncontradas = [];
-
-  const fetchPromises = ingredientes.map((ingrediente) => {
-    return fetch(
-      `https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingrediente}`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("acá el array", data);
-        data.meals.forEach((meal) => {
-          recipesId.push(meal.idMeal);
-        });
-      });
-  });
-
-  await Promise.all(fetchPromises);
-
-  for (const id of recipesId) {
-    const response = await fetch(
-      `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
-    );
-    const data = await response.json();
-    const receta = data.meals[0];
-    let ingredienteLista = [];
-
-    for (let i = 1; i <= 20; i++) {
-      const ingrediente = receta[`strIngredient${i}`];
-      if (ingrediente) {
-        ingredienteLista.push(ingrediente);
-      }
-    }
-
-    if (ingredienteLista.length > 0) {
-      const todosPresentes = ingredientes.every((ingrediente) =>
-        ingredienteLista.includes(ingrediente)
-      );
-
-      if (todosPresentes) {
-        recetasEncontradas.push(receta.idMeal);
-      }
-    }
-  }
-
-  console.log(recetasEncontradas);
-}
-
-buscarRecetas2();
-
-
-
 
