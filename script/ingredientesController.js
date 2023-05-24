@@ -84,9 +84,12 @@ function clearRecetasEncontradas() {
   recetasEncontradas = [];
 }
 
+
 function buscarReceta() {
   const fetchPromises = ingredientes.map((ingrediente) => {
-    return fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingrediente}`)
+    return fetch(
+      `https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingrediente}`
+    )
       .then((response) => response.json())
       .then((data) => {
         data.meals.forEach((meal) => {
@@ -97,7 +100,6 @@ function buscarReceta() {
 
   Promise.all(fetchPromises).then(() => {
     comparandoIngredientes();
-    mostrarRecetas(recetasEncontradas); // Mover aquí la llamada a mostrarRecetas()
   });
 
   function comparandoIngredientes() {
@@ -111,22 +113,20 @@ function buscarReceta() {
           for (let i = 1; i <= 20; i++) {
             const ingrediente = receta[`strIngredient${i}`];
             if (ingrediente) {
-              ingredienteLista.push(ingrediente);
+              ingredienteLista.push(ingrediente.toLowerCase());
             }
           }
-
           if (ingredienteLista.length > 0) {
             const todosPresentes = ingredientes.every((ingrediente) =>
               ingredienteLista.includes(ingrediente)
             );
-
             if (todosPresentes) {
               const recetaExistente = recetasEncontradas.find(
                 (recetaEncontrada) => recetaEncontrada.idMeal === receta.idMeal
               );
-
               if (!recetaExistente) {
                 recetasEncontradas.push(receta);
+                mostrarRecetas(recetasEncontradas);
               }
             }
           }
@@ -135,21 +135,17 @@ function buscarReceta() {
   }
 }
 
-
 function mostrarRecetas(meals) {
-  console.log(meals);
   let html = "";
   meals.forEach((meal) => {
-    const idMeal = meal.idMeal;
-    const strMeal = meal.strMeal;
-    const strMealThumb = meal.strMealThumb;
+    const receta = new Receta(meal.idMeal, meal.strMeal, meal.strMealThumb);
 
     html += `
-      <div class="card d-inline-block ingredients__card" data-id="${idMeal}" style="width: 18rem;">
-        <img src="${strMealThumb}" class="card-img-top" alt="comida">
+      <div class="card d-inline-block ingredients__card" data-id="${receta.idMeal}" style="width: 18rem;">
+        <img src="${receta.strMealThumb}" class="card-img-top" alt="comida">
         <div class="card-body">
-          <h5 class="card-title">${strMeal}</h5>
-          <a href="#" class="btn btn-primary verMas" data-id="${idMeal}">Go somewhere</a>
+          <h5 class="card-title">${receta.strMeal}</h5>
+          <a href="#" class="btn btn-primary verMas" data-id="${receta.idMeal}">Ver Receta</a>
         </div>
       </div>
     `;
@@ -157,6 +153,7 @@ function mostrarRecetas(meals) {
 
   listaReceta.innerHTML = html;
 }
+
 
 //Obtenemos URl de la API como parámetro para redirigir al usuario.
 function videoInstrucciones(urlInstrucciones) {
@@ -169,7 +166,7 @@ formulario.addEventListener("submit", (event) => {
 });
 
 buscar.addEventListener("click", () => {
-  //clearRecetasEncontradas(); con esto no salen las cards.
+  clearRecetasEncontradas();
   buscarReceta();
 });
 
@@ -218,3 +215,7 @@ listaReceta.addEventListener("click", (event) => {
   }
 });
 
+//Crear constructor para mostrar la receta...
+//indice completar el form de contactanos con algún sweetAlert
+//Blog que te lleve a algún lado
+//armar aboutUs con algo copado de Chat-GPT
