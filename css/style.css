@@ -48,6 +48,11 @@
     box-shadow: 5px 0 20px black;
     padding-top: 0.75rem; }
 
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; }
+
 .hero {
   display: flex;
   flex-direction: column;
@@ -168,6 +173,9 @@
     padding: 10px; }
   .ingredients__label {
     font-size: 2rem;
+    font-family: 'Permanent Marker', cursive; }
+  .ingredients__label em {
+    font-size: 1rem;
     font-family: 'Permanent Marker', cursive; }
   .ingredients__input {
     width: 40%; }

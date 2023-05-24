@@ -39,3 +39,21 @@ function errorInesperado() {
     text: 'Ha ocurrido un error inesperado. Porfavor intente nuevamente.',
   });
 }
+
+function msjErrorMaximoIngredientes() {
+  Swal.fire({
+    title: "Error",
+    text: "Solo puedes ingresar un máximo de 2 ingredientes.",
+    icon: "error",
+    confirmButtonText: "Aceptar",
+  });
+}
+
+function msjErrorCantidadIngredientes() {
+  Swal.fire({
+    title: "Error",
+    text: "No hay ingredientes ingresados. Ingresa hasta 2 (dos) ingredientes.",
+    icon: "error",
+    confirmButtonText: "Aceptar",
+  });
+}

@@ -4,7 +4,7 @@ const goRandomBtn = document.getElementById("goRandomBtn");
 let urlInstrucciones;
 
 function videoInstrucciones(urlInstrucciones) {
-  window.location.href = urlInstrucciones;
+  window.open(urlInstrucciones, "_blank");
 }
 
 goRandomBtn.addEventListener("click", (event) => {

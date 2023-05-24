@@ -60,16 +60,21 @@ function mostrarIngredientes() {
     .getElementById("nombreIngrediente")
     .value.trim()
     .toLowerCase();
-    console.log(ingredienteIngresado);
+
   if (!ingredienteIngresado) {
     return false;
   }
+
+  if (ingredientes.length >= 2) {
+    msjErrorMaximoIngredientes();
+    return false;
+  }
+
   if (buscarIngrediente(ingredienteIngresado)) {
     msjErroneo();
   } else {
     msjSuccess();
     ingredientes.push(ingredienteIngresado);
-    //Almacenamos en el local storage todas los ingredientes.
     localStorage.setItem("ingrediente", JSON.stringify(ingredientes));
     renderizarIngredientes(ingredientes);
     clearInput();
@@ -157,7 +162,11 @@ function mostrarRecetas(meals) {
 
 //Obtenemos URl de la API como parámetro para redirigir al usuario.
 function videoInstrucciones(urlInstrucciones) {
-  window.location.href = urlInstrucciones;
+  window.open(urlInstrucciones, "_blank");
+}
+
+function ingredienteVacio() {
+  ingredientes.length === 0 ? msjErrorCantidadIngredientes() : "";
 }
 
 formulario.addEventListener("submit", (event) => {
@@ -166,6 +175,7 @@ formulario.addEventListener("submit", (event) => {
 });
 
 buscar.addEventListener("click", () => {
+  ingredienteVacio();
   clearRecetasEncontradas();
   buscarReceta();
 });
@@ -215,7 +225,8 @@ listaReceta.addEventListener("click", (event) => {
   }
 });
 
-//Crear constructor para mostrar la receta...
+
+
 //indice completar el form de contactanos con algún sweetAlert
 //Blog que te lleve a algún lado
 //armar aboutUs con algo copado de Chat-GPT
