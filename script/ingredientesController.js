@@ -97,9 +97,13 @@ function buscarReceta() {
     )
       .then((response) => response.json())
       .then((data) => {
-        data.meals.forEach((meal) => {
-          recipesId.push(meal.idMeal);
-        });
+        if (data.meals && data.meals.length > 0) {
+          data.meals.forEach((meal) => {
+            recipesId.push(meal.idMeal);
+          });
+        } else {
+          ingredienteNoValido();
+        }
       });
   });
 
@@ -107,37 +111,46 @@ function buscarReceta() {
     comparandoIngredientes();
   });
 
+
   function comparandoIngredientes() {
     recipesId.forEach((id) => {
       fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
         .then((response) => response.json())
         .then((data) => {
-          const receta = data.meals[0];
-          let ingredienteLista = [];
-
-          for (let i = 1; i <= 20; i++) {
-            const ingrediente = receta[`strIngredient${i}`];
-            if (ingrediente) {
-              ingredienteLista.push(ingrediente.toLowerCase());
-            }
-          }
-          if (ingredienteLista.length > 0) {
-            const todosPresentes = ingredientes.every((ingrediente) =>
-              ingredienteLista.includes(ingrediente)
-            );
-            if (todosPresentes) {
-              const recetaExistente = recetasEncontradas.find(
-                (recetaEncontrada) => recetaEncontrada.idMeal === receta.idMeal
-              );
-              if (!recetaExistente) {
-                recetasEncontradas.push(receta);
-                mostrarRecetas(recetasEncontradas);
+          if (data.meals && data.meals.length > 0) {
+            const receta = data.meals[0];
+            let ingredienteLista = [];
+  
+            for (let i = 1; i <= 20; i++) {
+              const ingrediente = receta[`strIngredient${i}`];
+              if (ingrediente) {
+                ingredienteLista.push(ingrediente.toLowerCase());
               }
             }
+            if (ingredienteLista.length > 0) {
+              const todosPresentes = ingredientes.every((ingrediente) =>
+                ingredienteLista.includes(ingrediente)
+              );
+              if (todosPresentes) {
+                const recetaExistente = recetasEncontradas.find(
+                  (recetaEncontrada) => recetaEncontrada.idMeal === receta.idMeal
+                );
+                if (!recetaExistente) {
+                  recetasEncontradas.push(receta);
+                  mostrarRecetas(recetasEncontradas);
+                }
+              }
+            }
+          } else {
+            console.log(`No se encontró información de la receta con el ID: ${id}`);
           }
+        })
+        .catch((error) => {
+          console.log("Error:", error);
         });
     });
   }
+  
 }
 
 function mostrarRecetas(meals) {
@@ -225,8 +238,3 @@ listaReceta.addEventListener("click", (event) => {
   }
 });
 
-
-
-//indice completar el form de contactanos con algún sweetAlert
-//Blog que te lleve a algún lado
-//armar aboutUs con algo copado de Chat-GPT

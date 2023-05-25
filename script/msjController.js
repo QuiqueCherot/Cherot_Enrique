@@ -57,3 +57,12 @@ function msjErrorCantidadIngredientes() {
     confirmButtonText: "Aceptar",
   });
 }
+
+function ingredienteNoValido() {
+  Swal.fire({
+    title: "Opa!",
+    text: "No hemos podido encontrar recetas con ese ingrediente. Pruebe ingresando otro.",
+    icon: "error",
+    confirmButtonText: "Aceptar",
+  });
+}
